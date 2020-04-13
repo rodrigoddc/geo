@@ -1,0 +1,11 @@
+media
+.idea
+*.*~
+*.sqlite3
+*.pyc
+.env
+venv
+__pycache__
+local_settings.py
+dev_settings.py
+geoip

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="row">
+    <div class="col-sm-12">
+        <form action="{% url 'core:index' %}" autocomplete="off">
+            {% csrf_token %}
+            <div class="form-group">
+                <h1><a href="{% url 'core:index' %}">Searcher</a></h1>
+                <span class="h4">[{{ city }} {% if country %} - {{ country }} {% endif %}]</span>
+            </div>
+            <div class="form-group">
+                <input name="key" type="text" class="form-control" placeholder="Insert a keyword for search" required>
+                <small id="key-help" class="form-text text-muted">Ex: Brazilian Food, Mexican Food, etc.</small>
+            </div>
+            <div class="form-group">
+                <input name="loc" type="text" class="form-control" placeholder="Insert a city for search">
+                <small id="loc-help" class="form-text text-muted">Ex: Sao Paulo, Mexico, etc.</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        {% if 'error' in items %}
+            <span>No places found at {{ city }}</span>
+        {% elif search in items.businesses|length < 1 %}
+            <span>Nothing found with these keyword</span>
+        {% elif city and items %}
+            <h2>Results: </h2>
+            {% for biz in items.businesses %}
+                <span class="text-info h5">{{ biz.name }}, {{ city }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="container">
+    {% if city and items|length > 1 %}
+        {% include 'core/maps.html' %}
+    {% endif %}
+    </div>
+</div>
+{% endblock %}
